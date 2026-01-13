@@ -8,6 +8,7 @@ You'll need a GitHub Personal Access Token with 'repo' scope.
 
 import base64
 import json
+import os
 import sys
 from getpass import getpass
 try:
@@ -18,9 +19,9 @@ except ImportError:
     print("  pip install requests pynacl")
     sys.exit(1)
 
-# Repository configuration
-REPO_OWNER = "Dmf-records-fly-hoolie-ent"
-REPO_NAME = "dmf-music-platform-powered-by-Da-Riyah"
+# Repository configuration (can be overridden via environment variables)
+REPO_OWNER = os.environ.get("REPO_OWNER", "Dmf-records-fly-hoolie-ent")
+REPO_NAME = os.environ.get("REPO_NAME", "dmf-music-platform-powered-by-Da-Riyah")
 
 # Required secrets
 REQUIRED_SECRETS = [
@@ -94,10 +95,11 @@ def main():
     print("You need a GitHub Personal Access Token with 'repo' scope.")
     print("Create one at: https://github.com/settings/tokens")
     print()
-    github_token = getpass("Enter your GitHub token (starts with ghp_): ").strip()
+    github_token = getpass("Enter your GitHub token: ").strip()
     
-    if not github_token.startswith("ghp_"):
-        print("Warning: Token should start with 'ghp_'. Continuing anyway...")
+    if not github_token:
+        print("Error: Token is required.")
+        sys.exit(1)
     
     # Get public key
     print("\nVerifying access and getting repository public key...")

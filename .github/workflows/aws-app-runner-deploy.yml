@@ -29,7 +29,7 @@ jobs:
 
     - name: Deploy to App Runner
       id: deploy-apprunner
-      uses: awslabs/amazon-app-runner-deploy@main
+      uses: awslabs/amazon-app-runner-deploy@1.2.0
       with:
         service: ${{ env.APP_RUNNER_SERVICE_NAME }}
         source-connection-arn: ${{ secrets.AWS_SOURCE_CONNECTION_ARN }}
