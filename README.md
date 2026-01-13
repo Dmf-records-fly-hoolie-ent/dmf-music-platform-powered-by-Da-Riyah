@@ -1,19 +1,3 @@
-# repo/
-# ├─ README.md
-# ├─ docker-compose.yml
-# ├─ .env.example
-# ├─ apps/
-# │  └─ frontend/...
-# ├─ libs/
-# │  └─ security/...
-# └─ services/
-#    ├─ dariyah-core/...
-#    └─ streamgod-presenceos/...
-
-# =========================
-# README.md
-# =========================
-"""
 # Da'Riyah Monorepo (Scaffold)
 
 ## Services
@@ -27,6 +11,27 @@
 
 2) Start:
    - `docker compose up --build`
+
+## Deployment to AWS App Runner
+
+This repository is configured for automatic deployment to AWS App Runner when code is pushed to the `main` branch.
+
+### Quick Setup (5 minutes)
+1. **Add GitHub Secrets** - See [QUICK_START.md](./QUICK_START.md) for step-by-step instructions
+2. **Push to main** - Deployment triggers automatically
+
+### Required GitHub Secrets
+- `AWS_ACCESS_KEY_ID` - AWS IAM access key
+- `AWS_SECRET_ACCESS_KEY` - AWS IAM secret key
+- `AWS_REGION` - AWS region (e.g., `us-east-1`)
+- `APP_RUNNER_SERVICE_NAME` - Your App Runner service name
+- `AWS_SOURCE_CONNECTION_ARN` - App Runner GitHub connection ARN
+
+### Setup Options
+- **Option A (Recommended):** Add secrets manually via [GitHub Settings](https://github.com/Dmf-records-fly-hoolie-ent/dmf-music-platform-powered-by-Da-Riyah/settings/secrets/actions)
+- **Option B:** Use the automated script: `python3 setup-github-secrets.py`
+
+📖 **Full Documentation:** [DEPLOYMENT_SETUP.md](./DEPLOYMENT_SETUP.md)
 
 ## API Wall (Client Requirements)
 Every request must include:
