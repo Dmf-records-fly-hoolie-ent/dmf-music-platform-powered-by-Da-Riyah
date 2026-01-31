@@ -1,0 +1,43 @@
+name: Deploy to AWS App Runner
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  APP_RUNNER_SERVICE_NAME: ${{ secrets.APP_RUNNER_SERVICE_NAME }}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Deploy to App Runner
+      id: deploy-apprunner
+      uses: awslabs/amazon-app-runner-deploy@1.2.0
+      with:
+        service: ${{ env.APP_RUNNER_SERVICE_NAME }}
+        source-connection-arn: ${{ secrets.AWS_SOURCE_CONNECTION_ARN }}
+        region: ${{ env.AWS_REGION }}
+        cpu: 1
+        memory: 2
+        port: 8080
+        wait-for-service-stability-seconds: 600
+
+    - name: App Runner URL
+      run: echo "App Runner URL ${{ steps.deploy-apprunner.outputs.service-url }}"
